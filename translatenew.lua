@@ -71,7 +71,6 @@ function detect(message)
 		response = HttpService:JSONDecode(response.Body)
 	end
 	if response and response[1] then
-		print(response[1].language)
 		return response[1].language
 	else
 		return nil
@@ -101,7 +100,6 @@ function translate(message,source,target)
 		response = HttpService:JSONDecode(response.Body)
 	end
 	if response and response.translatedText then
-		print(response.translatedText)
 		return response.translatedText
 	else
 		return nil
