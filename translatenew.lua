@@ -83,7 +83,7 @@ function translate(message,source,target)
 	pcall(function()
 		response = syn.request(--HttpService:RequestAsync(
 			{
-				Url = "https://libretranslate.de/detect",
+				Url = "https://libretranslate.de/translate",
 				Method = "POST",
 				Headers = {
 					["Content-Type"] = "application/json"
