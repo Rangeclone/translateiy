@@ -2,7 +2,7 @@
     Message Translator
     Made by Aim
     Credits to Riptxde for the sending chathook
-	Modder0source fixingin api
+    Credit to Modder0Source for updated and fixed API
 --]]
 
 if not game['Loaded'] then game['Loaded']:Wait() end; repeat wait(.06) until game:GetService('Players').LocalPlayer ~= nil
@@ -51,14 +51,63 @@ while not s do
 	s, e = pcall(test)
 end--]]
 
+function detect(message)
+	local response 
+	pcall(function()
+		response = HttpService:RequestAsync(
+			{
+				Url = "https://libretranslate.de/detect",
+				Method = "POST",
+				Headers = {
+					["Content-Type"] = "application/json"
+				},
+				Body = HttpService:JSONEncode({
+					q = message
+				})
+			}
+		)
+	end)
+	if response and response[1] then
+		return response[1].language
+	else
+		return nil
+	end
+end
+
+function translate(message,source,target)
+	local response 
+	pcall(function()
+		response = HttpService:RequestAsync(
+			{
+				Url = "https://libretranslate.de/detect",
+				Method = "POST",
+				Headers = {
+					["Content-Type"] = "application/json"
+				},
+				Body = HttpService:JSONEncode({
+					q = message,
+					source = source,
+					target = target,
+					format = "text"
+				})
+			}
+		)
+	end)
+	if response and response.translatedText then
+		return response.TranslatedText
+	else
+		return nil
+	end
+end
+
 function translateFrom(message)
-	local URL = "https://libretranslate.de/detect?q="..HttpService:UrlEncode(message)
-	local lang = HttpService:JSONDecode(game:HttpGetAsync(URL))[1].language
+	local lang = detect(message)
 	local translation
 	if lang and lang ~= YourLang then
 		--local URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?key="..key.."&text="..HttpService:UrlEncode(message).."&lang="..lang.."-"..YourLang
-		local URL = "https://libretranslate.de/translate?q="..HttpService:UrlEncode(message).."&source="..lang.."&target="..YourLang.."&format=text"
-		translation = HttpService:JSONDecode(game:HttpGetAsync(URL)).translatedText
+		--local URL = "https://libretranslate.de/translate?q="..HttpService:UrlEncode(message).."&source="..lang.."&target="..YourLang.."&format=text"
+		--translation = HttpService:JSONDecode(game:HttpGetAsync(URL)).translatedText
+		translation = translate(message,lang,YourLang)
 	end
 	return {translation, lang}
 end
@@ -92,13 +141,14 @@ local target = ""
 function translateTo(message, target)
 	target = target:lower()
 	if l[target] then target = l[target] end
-	local URL = "https://libretranslate.de/detect?q="..HttpService:UrlEncode(message)
-	local lang = HttpService:JSONDecode(game:HttpGetAsync(URL))[1].language
+	--local URL = "https://libretranslate.de/detect?q="..HttpService:UrlEncode(message)
+	local lang = detect(message)
 	local translation
 	if lang and lang ~= target then
 		--local URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?key="..key.."&text="..HttpService:UrlEncode(message).."&lang="..lang.."-"..target
-		local URL = "https://libretranslate.de/translate?q="..HttpService:UrlEncode(message).."&source="..lang.."&target="..target.."&format=text"
-		translation = HttpService:JSONDecode(game:HttpGetAsync(URL)).translatedText
+		--local URL = "https://libretranslate.de/translate?q="..HttpService:UrlEncode(message).."&source="..lang.."&target="..target.."&format=text"
+		--translation = HttpService:JSONDecode(game:HttpGetAsync(URL)).translatedText
+		translation = translate(message,lang,target)
 	end
 	return translation
 end
