@@ -36,7 +36,7 @@ game:GetService("StarterGui"):SetCore("SendNotification",
 }
 )
 
-properties.Text = "[TR] To send messages in a language, say > followed by the target language/language code, e.g.: >ru or >russian. To disable (go back to original language), say >d."
+properties.Text = "[TR V2] To send messages in a language, say > followed by the target language/language code, e.g.: >ru or >russian. To disable (go back to original language), say >d."
 StarterGui:SetCore("ChatMakeSystemMessage", properties)
 
 -- See if selected API key is working, and if not, get a new one.
@@ -67,6 +67,7 @@ function detect(message)
 			}
 		)
 	end)
+	print(response)
 	if response and response[1] then
 		return response[1].language
 	else
@@ -93,6 +94,7 @@ function translate(message,source,target)
 			}
 		)
 	end)
+	print(response)
 	if response and response.translatedText then
 		return response.TranslatedText
 	else
