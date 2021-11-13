@@ -2,6 +2,7 @@
     Message Translator
     Made by Aim
     Credits to Riptxde for the sending chathook
+	Modder0source fixingin api
 --]]
 
 if not game['Loaded'] then game['Loaded']:Wait() end; repeat wait(.06) until game:GetService('Players').LocalPlayer ~= nil
