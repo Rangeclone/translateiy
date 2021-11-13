@@ -54,7 +54,7 @@ end--]]
 function detect(message)
 	local response 
 	pcall(function()
-		response = HttpService:RequestAsync(
+		response = syn.request(--HttpService:RequestAsync(
 			{
 				Url = "https://libretranslate.de/detect",
 				Method = "POST",
@@ -67,8 +67,11 @@ function detect(message)
 			}
 		)
 	end)
-	print(response)
+	if response.Body then
+		response = response.Body 
+	end
 	if response and response[1] then
+		print(response[1].language)
 		return response[1].language
 	else
 		return nil
@@ -78,7 +81,7 @@ end
 function translate(message,source,target)
 	local response 
 	pcall(function()
-		response = HttpService:RequestAsync(
+		response = syn.request(--HttpService:RequestAsync(
 			{
 				Url = "https://libretranslate.de/detect",
 				Method = "POST",
@@ -94,8 +97,11 @@ function translate(message,source,target)
 			}
 		)
 	end)
-	print(response)
+		if response.Body then
+		response = response.Body 
+	end
 	if response and response.translatedText then
+		print(response.TranslatedText)
 		return response.TranslatedText
 	else
 		return nil
