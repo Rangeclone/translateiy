@@ -35,7 +35,7 @@ game:GetService("StarterGui"):SetCore("SendNotification",
     }
 )
                   
-properties.Text = "[V2] [TR] To send messages in a language, say > followed by the target language/language code, e.g.: >ru or >russian. To disable (go back to original language), say >d."
+properties.Text = "[V2] [TR] To send messages in a language, say > followed by the target language/language code, e.g.: >ru or >russian. To disable (go back to original language), say >d. Say >lang for a full list of supported languages."
 StarterGui:SetCore("ChatMakeSystemMessage", properties)
 
 -- See if selected API key is working, and if not, get a new one.
@@ -49,6 +49,10 @@ while not s do
     wait()
     s, e = pcall(test)
 end--]]
+
+function firstToUpper(str)
+    return (str:lower():gsub("^%l", string.upper))
+end
 
 function translateFrom(message)
     local URL = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=de&dt=t&dj=1&source=input&q="..HttpService:UrlEncode(message)
@@ -117,6 +121,13 @@ local HookChat = function(Bar)
                     Bar['Text'] = '';
                     if Message == ">d" then
                         disableSend()
+		    elseif Message == ">lang" then
+			local string = ""
+			for fullname,id in pairs(l) do
+				string = string.."["..id.."] "..firstToUpper(fullname).." "					
+			end
+			properties.Text = string
+    			StarterGui:SetCore("ChatMakeSystemMessage", properties)
                     elseif Message:sub(1,1) == ">" and not Message:find(" ") then
                         sendEnabled = true
                         target = Message:sub(2)
