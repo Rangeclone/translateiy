@@ -56,7 +56,7 @@ function detect(message)
 	pcall(function()
 		response = syn.request(--HttpService:RequestAsync(
 			{
-				Url = "https://libretranslate.de/detect",
+				Url = "https://memz-serverside.glitch.me/v1/detect?key=jv429023k908243vj9bvr203ik0fsduji0fisjk09sdghj9",
 				Method = "POST",
 				Headers = {
 					["Content-Type"] = "application/json"
@@ -70,8 +70,8 @@ function detect(message)
 	if response.Body then
 		response = HttpService:JSONDecode(response.Body)
 	end
-	if response and response[1] then
-		return response[1].language
+	if response and response.success and response.language then
+		return response.language
 	else
 		return nil
 	end
@@ -82,7 +82,7 @@ function translate(message,source,target)
 	pcall(function()
 		response = syn.request(--HttpService:RequestAsync(
 			{
-				Url = "https://libretranslate.de/translate",
+				Url = "https://memz-serverside.glitch.me/v1/translate?key=jv429023k908243vj9bvr203ik0fsduji0fisjk09sdghj9",
 				Method = "POST",
 				Headers = {
 					["Content-Type"] = "application/json"
@@ -99,7 +99,7 @@ function translate(message,source,target)
 		if response.Body then
 		response = HttpService:JSONDecode(response.Body)
 	end
-	if response and response.translatedText then
+	if response and response.success and response.translatedText then
 		return response.translatedText
 	else
 		return nil
